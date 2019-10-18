@@ -21,7 +21,7 @@ export class ResourceLoader{
     //定义一个图片加载完成的方法
     onloaded(callback){
         let n=0;//计数器,记加载图片成功的数目
-        for(let val of this.map.value){
+        for(let val of this.map.values()){
             val.onload= ()=>{
                 //使用箭头函数 ,保证this的指向不变
                 val.onload=()=>{
