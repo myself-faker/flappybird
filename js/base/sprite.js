@@ -1,4 +1,4 @@
-import { Datastore } from "./dataStore";
+import { Datastore } from "./dataStore.js";
 
 //各种图片的父类
 
@@ -9,7 +9,7 @@ export class Sprite{
         this.ctx=dataStore.ctx;
         this.img=img;//图片
         this.srcX=srcX;//图片的其实x坐标
-        this.srcY=srcy;//起始y坐标
+        this.srcY=srcY;//起始y坐标
         this.srcW=srcW;//图片的宽
         this.srcH=srcH;//图片的高
         this.x=x;//在画布上的x
@@ -22,7 +22,7 @@ export class Sprite{
         srcW=this.srcW,srcH=this.srcH,x=this.x,
         y=this.y,width=this.width,height=this.height){
 
-         this.ctx.drawImage(mg,srcX,srcY,srcW,srcH,x,y,width,height)
+         this.ctx.drawImage(img,srcX,srcY,srcW,srcH,x,y,width,height)
 
     }
     //获取 指定图片
