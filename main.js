@@ -1,8 +1,10 @@
 import { ResourceLoader } from "./js/base/resourcesLoader.js";
 import { Datastore } from "./js/base/dataStore.js";
 import { Background } from "./js/runtime/background.js";
-import { Land } from "./js/runtime/land.js/index.js";
+import { Land } from "./js/runtime/land.js";
 import { Director } from "./js/director.js";
+import { UpPipe } from "./js/runtime/uppipe.js";
+import { Birds } from "./js/player/birds.js";
 
 //程序的主类,用于小程序过程中数据的初始化,以及点击事件的绑定
 
@@ -11,7 +13,9 @@ export class Main{
   constructor(){
     console.log('游戏开始了');
     //初始化画布
-    this.canvas=document.getElementById('game');
+    ///1111111111111111
+    // this.canvas=document.getElementById('game');
+    this.canvas=wx.createCanvas();
     this.ctx=this.canvas.getContext('2d'); 
     //初始化资源加载器
     this.loader=new ResourceLoader();
@@ -41,7 +45,9 @@ export class Main{
     //模拟画背景图
     // new Background().draw();
     // new Land().draw()
-    this.datastore.set('background',new Background()).set('land',new Land());
+    this.datastore.set('background',new Background()).set('land',new Land())
+                  .set('pipes',[])
+                  .set('birds',new Birds());
     //开始运行
     this.director.run();
   }
