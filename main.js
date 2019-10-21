@@ -8,14 +8,13 @@ import { Birds } from "./js/player/birds.js";
 
 //程序的主类,用于小程序过程中数据的初始化,以及点击事件的绑定
 
-
 export class Main{
   constructor(){
     console.log('游戏开始了');
     //初始化画布
     ///1111111111111111
-    // this.canvas=document.getElementById('game');
-    this.canvas=wx.createCanvas();
+    this.canvas=document.getElementById('game');
+    // this.canvas=wx.createCanvas();
     this.ctx=this.canvas.getContext('2d'); 
     //初始化资源加载器
     this.loader=new ResourceLoader();
