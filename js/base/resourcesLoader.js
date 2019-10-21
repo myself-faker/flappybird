@@ -6,8 +6,8 @@ import { resources } from "./resources.js";
 export class ResourceLoader{
     constructor(){
         // 获取图片资源的路径
-        this.map =new Map(resources);
-        
+        this.map =new Map(resources);//Map 对象将 值 变为键值对    二维数组 变为 map{arr[0] => arr[1]}
+        // console.log(Map);
         // console.log(this.map);
         //遍历集合map,将集合中的字符串路径
         for(let [k,v] of this.map){
@@ -35,10 +35,7 @@ export class ResourceLoader{
                         //全部加载完成,返回加载完成后的map集合
                         callback(this.map);
                     }
-                   
                 }
-            
         }
     }
-
 }
