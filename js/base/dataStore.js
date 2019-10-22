@@ -4,7 +4,7 @@
 export class Datastore{
     constructor(){
         //用于保存数据
-        this.map=new Map();
+        this.map=new Map();0
     }
     //单例,保证变量池只有一个
     static getInstance(){
