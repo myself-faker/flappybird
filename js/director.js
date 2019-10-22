@@ -29,17 +29,19 @@ export class Director{
         return strike;
     }
     //判断小鸟的撞击事件(天、地、水管)
+    
     check(){
         const birds=this.datastore.get('birds');
         const land=this.datastore.get('land');
         const pipes=this.datastore.get('pipes');
-
+        const score=this.datastore.get('score');
         //判断与天地相撞
         if(birds.birdsY[0] < 0 || birds.birdsHeight[0]+birds.birdsY[0] > land.y){
             //游戏结束
             this.isGameOver =true;
             return;
         }    
+        
         //判断与水管相撞
         //构建小鸟的模型数据
         const birdBorder={
@@ -63,7 +65,19 @@ export class Director{
                 this.isGameOver=true;
                 return ;
             }
+            
         }
+        //小鸟 越过水管没有 撞上,加分
+        //越过的肯定是第一组水管,只需要判断与第一组水管的位置关系
+        
+        if(pipes.length>0){
+            if(birds.birdsX[0]>pipes[0].x+pipes[0].width&&score.canAdd){
+                score.score++;
+                //改变加分状态为不可嘉文
+                score.canAdd=false
+            }
+        }
+        
     }
 
     //点击 小鸟向上飞一句距离
@@ -104,6 +118,7 @@ export class Director{
             if(pipes[0].x<-pipes[0].width&&pipes.length==4){
                 pipes.shift();
                 pipes.shift();
+                this.datastore.get('score').canAdd=true;
             }
             //创建水管:前面一组水管有没有越过屏幕中央,如果越过,则开始创建下一组水管
             const  Canvaswidth=this.datastore.canvas.width;
@@ -123,6 +138,8 @@ export class Director{
         this.datastore.get('birds').draw();
          // 画底板图
          this.datastore.get('land').draw();
+         //画分数
+         this.datastore.get('score').draw();
         //循环运行
         // setInterval(()=>this.run(),300);
         requestAnimationFrame(()=>this.run());
@@ -130,8 +147,10 @@ export class Director{
         else{
             //游戏结束停止循环渲染
             cancelAnimationFrame(this.id);
+            this.datastore.get('startButton').draw();
+            //销毁数据
+            this.datastore.destroy();
         }
-        
     }
 }
 

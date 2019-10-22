@@ -5,6 +5,8 @@ import { Land } from "./js/runtime/land.js";
 import { Director } from "./js/director.js";
 import { UpPipe } from "./js/runtime/uppipe.js";
 import { Birds } from "./js/player/birds.js";
+import { StartButton } from "./js/player/startButton.js";
+import { Score } from "./js/player/score.js";
 
 //程序的主类,用于小程序过程中数据的初始化,以及点击事件的绑定
 
@@ -41,12 +43,16 @@ export class Main{
   }
   //游戏初始化 初始化游戏中的数据,将其保存在变量池中
   init(){
+    //奖游戏结束改为false
+    this.director.isGameOver=false;
     //模拟画背景图
     // new Background().draw();
     // new Land().draw()
     this.datastore.set('background',new Background()).set('land',new Land())
                   .set('pipes',[])
-                  .set('birds',new Birds());
+                  .set('birds',new Birds())
+                  .set('startButton',new StartButton())
+                  .set('score',new Score());
     //调用单击事件方法
     this.gameEvent();
 
@@ -58,7 +64,7 @@ export class Main{
       
       this.canvas.addEventListener('touchstart',e=>{
         // console.log(1);
-        if(false){
+        if(this.director.isGameOver){
           //游戏结束,点击重新开始,
           this.init();
         }else{
