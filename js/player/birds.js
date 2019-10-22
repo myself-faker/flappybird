@@ -32,11 +32,22 @@ export class Birds extends Sprite{
         // if(this.index>2){
         //     this.index=0;
         // }
+        //小鸟状态切换(翅膀方向的切换)
         this.count+=0.13;
         if(this.index>=2){
             this.count=0;
         }
         this.index=Math.floor(this.count);
+
+        //小鸟自由落体运动
+        const g=0.98;//模拟重力加速度
+        //小鸟下落的距离
+        const offsetY=(g*this.time*this.time)/8
+        for(let i=0;i<3;i++){
+            this.birdsY[i]=this.y[i]+offsetY;
+        }
+        this.time++;
+        
         super.draw(this.img,this.clippinX[this.index],
             this.clippinY[this.index],this.clippingWidth[this.index],this.clippingHeight[this.index],
             this.birdsX[this.index],this.birdsY[this.index],

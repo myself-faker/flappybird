@@ -16,6 +16,66 @@ export class Director{
         }
         return Director.Instance;
     }
+    //判断小鸟与某一个水管是否碰撞(小鸟的模型)
+    isStrike(bird,pipe){
+        let strike =true;//假设装上了
+        if(bird.right<pipe.left     //小鸟的右边小于水管的左边
+            || bird.bottom<pipe.top // 小鸟的下边小于水管的上边
+            || bird.left>pipe.right //小鸟的左边大于水管的右边
+            || bird.top>pipe.bottom //小鸟的上边大于水管的下边
+            ){//没撞死
+                strike =false
+        }
+        return strike;
+    }
+    //判断小鸟的撞击事件(天、地、水管)
+    check(){
+        const birds=this.datastore.get('birds');
+        const land=this.datastore.get('land');
+        const pipes=this.datastore.get('pipes');
+
+        //判断与天地相撞
+        if(birds.birdsY[0] < 0 || birds.birdsHeight[0]+birds.birdsY[0] > land.y){
+            //游戏结束
+            this.isGameOver =true;
+            return;
+        }    
+        //判断与水管相撞
+        //构建小鸟的模型数据
+        const birdBorder={
+            top:birds.birdsY[0],
+            right:birds.birdsX[0]+birds.birdsWidth[0],
+            bottom:birds.birdsY[0]+birds.birdsHeight[0],
+            left:birds.birdsX[0]
+        }
+        //循环水管遍历构建每一个水管的模型数据
+        for(let i=0;i<pipes.length;i++){
+            const pipe=pipes[i];
+            const pipeBorder ={
+                top:pipe.y,
+                right:pipe.x+pipe.width,
+                bottom:pipe.y+pipe.height,
+                left:pipe.x
+            }
+            //判断小鸟与某个水管是否撞击
+            if(this.isStrike(birdBorder,pipeBorder)){
+                //撞了
+                this.isGameOver=true;
+                return ;
+            }
+        }
+    }
+
+    //点击 小鸟向上飞一句距离
+    birdsUp(){
+        const birds = this.datastore.get('birds');//获取变量池中的小鸟对象
+        for(let i=0;i<3;i++){
+            birds.y[i] = birds.birdsY[i]-60;
+        }
+        birds.time = 0;
+    }
+
+
     //创建水管
     createPipes(){
         const minTop=this.datastore.canvas.height/8;//最小值
@@ -27,7 +87,11 @@ export class Director{
 
     //运行 
     run(){ 
-        //画背景图 
+        //检查 游戏是否结束
+        this.check();
+        if(!this.isGameOver){
+            //游戏未结束
+            //画背景图 
         this.datastore.get('background').draw(); 
         // console.log(1);
        
@@ -62,6 +126,11 @@ export class Director{
         //循环运行
         // setInterval(()=>this.run(),300);
         requestAnimationFrame(()=>this.run());
+        }
+        else{
+            //游戏结束停止循环渲染
+            cancelAnimationFrame(this.id);
+        }
         
     }
 }

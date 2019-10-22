@@ -47,8 +47,30 @@ export class Main{
     this.datastore.set('background',new Background()).set('land',new Land())
                   .set('pipes',[])
                   .set('birds',new Birds());
+    //调用单击事件方法
+    this.gameEvent();
+
     //开始运行
     this.director.run();
   }
- 
+    //绑定单击事件
+    gameEvent(){
+      
+      this.canvas.addEventListener('touchstart',e=>{
+        // console.log(1);
+        if(false){
+          //游戏结束,点击重新开始,
+          this.init();
+        }else{
+          //游戏未结束  
+          //点击触发 小鸟向上飞一段的距离 
+          this.director.birdsUp();
+          // console.log(1);
+        }
+      })
+    }
+
+
+
+
 }
